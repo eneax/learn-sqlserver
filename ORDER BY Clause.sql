@@ -44,3 +44,39 @@ ORDER BY [e].[LastName], [e].[FirstName]
 	OFFSET 25 ROWS
 	FETCH NEXT 25 ROWS ONLY;
 	-- we skip the first 25 rows
+
+
+
+
+-- Demo: Binding Order
+
+/*
+	FROM
+	ON
+	JOIN
+	WHERE
+	GROUP BY
+	HAVING 
+	SELECT
+	DISTINCT
+	ORDER BY
+	TOP
+*/
+
+-- Can I reference TotalCost? Nope, because the WHERE is evaluated before the SELECT
+SELECT [TransactionID],
+	   [ProductID],
+	   [Quantity],
+	   [ActualCost],
+	   ([Quantity] * [ActualCost]) AS [TotalCost]
+FROM [Production].[TransactionHistory]
+WHERE [TotalCost] > 1000;
+
+-- Can I reference TotalCost? Yeap, because the ORDER BY is evaluated after the SELECT
+SELECT [TransactionID],
+	   [ProductID],
+	   [Quantity],
+	   [ActualCost],
+	   ([Quantity] * [ActualCost]) AS [TotalCost]
+FROM [Production].[TransactionHistory]
+ORDER BY [TotalCost];
