@@ -65,3 +65,51 @@ ORDER BY [CarrierTrackingNumber];
 SELECT COUNT(*)
 FROM [Sales].[SalesOrderDetail] AS [sod]
 WHERE [CarrierTrackingNumber] IS NULL;
+
+
+
+-- No TOP
+SELECT [FirstName],
+	   [LastName],
+	   [StartDate],
+	   [EndDate]
+FROM [HumanResources].[vEmployeeDepartmentHistory] AS [edh]
+ORDER BY [edh].[StartDate];
+
+-- TOP Rows
+SELECT TOP (10)
+	[FirstName],
+	[LastName],
+	[StartDate],
+	[EndDate]
+FROM [HumanResources].[vEmployeeDepartmentHistory] AS [edh]
+ORDER BY [edh].[StartDate];
+
+-- TOP percentage
+SELECT TOP (50) PERCENT
+	[FirstName],
+	[LastName],
+	[StartDate],
+	[EndDate]
+FROM [HumanResources].[vEmployeeDepartmentHistory] AS [edh]
+ORDER BY [edh].[StartDate];
+
+-- TOP WITH TIES (shows you more than 2 results if the columns have the same StartDate)
+SELECT TOP (2) WITH TIES
+	[FirstName],
+	[LastName],
+	[StartDate],
+	[EndDate]
+FROM [HumanResources].[vEmployeeDepartmentHistory] AS [edh]
+WHERE [edh].[StartDate] = '2009-01-04'
+ORDER BY [edh].[StartDate];
+
+-- TOP without TIES (shows you only 2 results)
+SELECT TOP (2)
+	[FirstName],
+	[LastName],
+	[StartDate],
+	[EndDate]
+FROM [HumanResources].[vEmployeeDepartmentHistory] AS [edh]
+WHERE [edh].[StartDate] = '2009-01-04'
+ORDER BY [edh].[StartDate];
