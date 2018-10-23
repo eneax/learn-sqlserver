@@ -16,8 +16,6 @@ ORDER BY p.Name, od.SalesOrderDetailID;
 
 
 
-
-
 -- Demo: OUTER JOIN
 /*
 - LEFT: return all rows from the left table that match the right table
@@ -70,3 +68,33 @@ LEFT OUTER JOIN [Sales].[SalesOrderDetail] AS od
 ON p.ProductID = od.ProductID
 WHERE od.ProductID > 2 -- this is evaluated after the join condition (returns not null values)
 ORDER BY p.Name, od.SalesOrderDetailID;
+
+
+
+
+-- Demo: Cross Joins
+/*
+- Cartesian Product
+- Each row from a data source is matched with ALL rows in the other data source
+- DataSource1 multiplied by DataSource2
+- There is no ON clause
+*/
+
+-- How many counts?
+SELECT COUNT(*)
+FROM [HumanResources].[Employee]; -- 290 rows
+
+SELECT COUNT(*)
+FROM [HumanResources].[EmployeeDepartmentHistory]; --296 rows
+
+SELECT e.BusinessEntityID, edh.DepartmentID
+FROM [HumanResources].[Employee] AS e
+CROSS JOIN [HumanResources].[EmployeeDepartmentHistory] AS edh; -- 290 * 296
+
+
+
+-- Practical usage - numbers result set (create a list of 100000 numbers)
+SELECT TOP 100000
+	ROW_NUMBER() OVER (ORDER BY sv1.number) AS num
+FROM [master].[dbo].[spt_values] sv1
+CROSS JOIN [master].[dbo].[spt_values] sv2;
