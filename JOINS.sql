@@ -98,3 +98,38 @@ SELECT TOP 100000
 	ROW_NUMBER() OVER (ORDER BY sv1.number) AS num
 FROM [master].[dbo].[spt_values] sv1
 CROSS JOIN [master].[dbo].[spt_values] sv2;
+
+
+
+-- Demo: Self Joins
+/*
+- Join a data source to itself
+- i.e. Recursive hierarchy: Manager/Employee relationship --> join managerID with employeeID
+*/
+
+-- Adding a column for this demo
+USE AdventureWorks2012;
+
+ALTER TABLE [HumanResources].[Employee]
+ADD [ManagerID] int NULL;
+GO
+
+-- The CEO doesn't have a manager (except the shareholders), while every one else works for the CEO
+UPDATE [HumanResources].[Employee]
+SET ManagerID = 1
+WHERE BusinessEntityID <> 1; -- not equal to 1
+
+-- Show the Employee / Manager relationship
+SELECT e.BusinessEntityID, e.HireDate,
+	   e.ManagerID, m.HireDate
+FROM [HumanResources].[Employee] AS e
+LEFT OUTER JOIN [HumanResources].[Employee] AS m
+ON e.ManagerID = m.BusinessEntityID;
+
+-- Demo Self Joins cleanup
+ALTER TABLE [HumanResources].[Employee]
+DROP COLUMN [ManagerID];
+GO
+
+
+
